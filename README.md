@@ -59,6 +59,7 @@ npx expo start
 ```
 Scan the QR code with your mobile device using the Expo Go app.
 File Structure
+```mathematica
 /src
 │── components
 │   ├── AvatarWithMessage.js
@@ -78,6 +79,7 @@ File Structure
 │── App.js
 │── package.json
 │── README.md
+```
 Contribution
 Fork the repository.
 Create a feature branch:
