@@ -20,6 +20,9 @@ import CustomizeAvatar from "./src/screens/CustomizeAvatarScreen";
 import AccessoryCustomizationScreen from "./src/screens/AccessoryScreen";
 import FriendsScreen from "./src/screens/FriendsScreen";
 import BadgesScreen from "./src/screens/BadgeScreen";
+import SampleActionPlanScreen from "./src/screens/SampleActionPlanScreen";
+import DailyCheckIn from "./src/screens/DailyCheckInScreen";
+import RedeemPoints from "./src/screens/RedeemPointsScreen";
 const Stack = createNativeStackNavigator();
 
 SplashScreen.preventAutoHideAsync(); // Prevent the app from hiding the splash screen automatically
@@ -132,6 +135,21 @@ export default function App() {
             <Stack.Screen
               name="BadgeScreen"
               component={BadgesScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SampleActionPlan"
+              component={SampleActionPlanScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DailyCheckIn"
+              component={DailyCheckIn}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="RedeemPoints"
+              component={RedeemPoints}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

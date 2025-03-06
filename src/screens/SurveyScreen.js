@@ -1,198 +1,163 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import PageHeader from '../components/PageHeader';
-import ProgressIndicator from '../components/ProgressIndicator';
-import ActionButton from '../components/ActionButton';
-import CategoryButton from '../components/CategoryButton';
-
-const surveyQuestions = [
-  {
-    id: 1,
-    question: "Which kind of hobby are you thinking of pursuing?",
-    type: "multiple-choice",
-    options: [
-      "Cooking & Baking",
-      "Reading",
-      "Gaming",
-      "Outdoor Activities",
-      "Traveling",
-      "Arts & Crafts",
-    ],
-  },
-  {
-    id: 2,
-    question: "Within Outdoor Activities, what are you interested in?",
-    type: "multiple-choice",
-    options: [
-      "Hiking",
-      "Scuba Diving",
-      "Bird Watching",
-      "Camping",
-      "Backpacking",
-    ],
-  },
-  {
-    id: 3,
-    question: "How much time do you want to commit to Hiking?",
-    type: "multiple-choice",
-    options: ["Minimal", "Moderate", "Significant", "Fully Committed"],
-  },
-  {
-    id: 4,
-    question: "In the past, how was your experience with starting and maintaining a hobby?",
-    type: "multiple-choice",
-    options: ["Easy", "Neutral", "Hard"],
-  },
-  {
-    id: 5,
-    question: "What are your typical free hours in a day or week?",
-    type: "checkbox",
-    options: ["Morning", "Afternoon", "Evening"],
-  },
-  {
-    id: 6,
-    question: "Can we send you reminders to help motivate you?",
-    type: "yes-no",
-  },
-];
+import React, { useState, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Animated,
+} from "react-native";
+import { Slider } from "@miblanchard/react-native-slider";
+import PageHeader from "../components/PageHeader";
+import ProgressIndicator from "../components/ProgressIndicator";
+import ActionButton from "../components/ActionButton";
+import CheckBox from "expo-checkbox";
+import CategoryButton from "../components/CategoryButton";
+import QuestionRenderer from "../components/QuestionRenderer";
+import surveyQuestions from "../data/SurveyQuestions";
+import styles from "../styles/SurveyScreenStyles";
 
 const SurveyScreen = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const currentQuestion = surveyQuestions[currentIndex];
-  const progress = Math.round(((currentIndex )/ surveyQuestions.length) * 100);
+  // Animated value to control opacity for transitions
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
-  const handleAnswer = (answer) => {
+  const currentQuestion = surveyQuestions[currentIndex];
+  const progress = Math.round((currentIndex / surveyQuestions.length) * 100);
+
+  const handleAnswer = (questionId, answer) => {
     setAnswers((prev) => ({
       ...prev,
-      [currentQuestion.id]: answer,
+      [questionId]: answer,
     }));
   };
 
-  const handleCheckboxAnswer = (option) => {
-    const selectedOptions = answers[currentQuestion.id] || [];
+  const handleCheckboxAnswer = (questionId, option) => {
+    const selectedOptions = answers[questionId] || [];
     if (selectedOptions.includes(option)) {
       setAnswers((prev) => ({
         ...prev,
-        [currentQuestion.id]: selectedOptions.filter((o) => o !== option),
+        [questionId]: selectedOptions.filter((o) => o !== option),
       }));
     } else {
       setAnswers((prev) => ({
         ...prev,
-        [currentQuestion.id]: [...selectedOptions, option],
+        [questionId]: [...selectedOptions, option],
       }));
     }
   };
 
+  // Validate current answer(s)
+  const validateAnswer = () => {
+    if (currentIndex === 4) {
+      if (!answers[5] || answers[5].length === 0 || answers[6] === undefined) {
+        return "Please answer both questions before continuing.";
+      }
+    } else if (currentIndex !== 3) {
+      if (
+        answers[currentQuestion.id] === undefined ||
+        (Array.isArray(answers[currentQuestion.id]) &&
+          answers[currentQuestion.id].length === 0)
+      ) {
+        return "Please answer the question before continuing.";
+      }
+    }
+    return null;
+  };
+
+  // Animate fade-out, update index, then fade-in
+  const animateTransition = (newIndex) => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentIndex(newIndex);
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
   const handleNext = () => {
-    if (!answers[currentQuestion.id] || answers[currentQuestion.id].length === 0) {
-      Alert.alert("Error", "Please answer the question before continuing.");
+    if (currentIndex === surveyQuestions.length - 1) {
+      navigation.navigate("HomePage");
       return;
     }
 
-    if (currentIndex < surveyQuestions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+    const errorMessage = validateAnswer();
+    if (errorMessage) {
+      Alert.alert("Error", errorMessage);
+      return;
+    }
+
+    if (currentIndex === 4) {
+      if (answers[6] === "Yes") {
+        Alert.alert(
+          '"Hobby Buddy" Would Like to Send You Notifications',
+          "Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.",
+          [
+            {
+              text: "No",
+              onPress: () => {
+                animateTransition(currentIndex + 2);
+              },
+              style: "cancel",
+            },
+            {
+              text: "Yes",
+              onPress: () => {
+                // Insert notification permission request logic here if needed.
+                animateTransition(currentIndex + 2);
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        animateTransition(currentIndex + 2);
+      }
     } else {
-      navigation.navigate("LoadingScreen");
+      animateTransition(currentIndex + 1);
     }
   };
+
   const handleBack = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-  const renderQuestion = () => {
-    switch (currentQuestion.type) {
-      case "multiple-choice":
-        return (
-          <ScrollView contentContainerStyle={styles.optionsContainer}>
-            {currentQuestion.options.map((option) => (
-              <CategoryButton
-                key={option}
-                label={option}
-                selected={answers[currentQuestion.id] === option}
-                onPress={() => handleAnswer(option)}
-              />
-            ))}
-          </ScrollView>
-        );
-      case "checkbox":
-        return (
-          <ScrollView contentContainerStyle={styles.optionsContainer}>
-            {currentQuestion.options.map((option) => (
-              <CategoryButton
-                key={option}
-                label={option}
-                selected={(answers[currentQuestion.id] || []).includes(option)}
-                onPress={() => handleCheckboxAnswer(option)}
-              />
-            ))}
-          </ScrollView>
-        );
-      case "yes-no":
-        return (
-          <View style={styles.optionsContainer}>
-            <CategoryButton
-              label="Yes"
-              selected={answers[currentQuestion.id] === "Yes"}
-              onPress={() => handleAnswer("Yes")}
-            />
-            <CategoryButton
-              label="No"
-              selected={answers[currentQuestion.id] === "No"}
-              onPress={() => handleAnswer("No")}
-            />
-          </View>
-        );
-      default:
-        return null;
+    if (currentIndex === 5) {
+      animateTransition(currentIndex - 2);
+    } else if (currentIndex > 0) {
+      animateTransition(currentIndex - 1);
     }
   };
 
   return (
     <View style={styles.container}>
-      <PageHeader 
-        useLogo={true} 
-        onBackPress={currentIndex > 0 ? handleBack : null} 
+      <PageHeader
+        useLogo={true}
+        onBackPress={currentIndex > 0 ? handleBack : null}
       />
       <ProgressIndicator progress={progress} />
 
-      <Text style={styles.progressText}>
-        Question {currentIndex + 1} of {surveyQuestions.length}
-      </Text>
-
-      <Text style={styles.questionText}>{currentQuestion.question}</Text>
-
-      {renderQuestion()}
-
-      <ActionButton label="Next" onPress={handleNext}/>
+      {/* Wrap the question area in Animated.View to apply fade transition */}
+      <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
+        <QuestionRenderer
+          currentQuestion={currentQuestion}
+          currentIndex={currentIndex}
+          answers={answers}
+          handleAnswer={handleAnswer}
+          handleCheckboxAnswer={handleCheckboxAnswer}
+        />
+      </Animated.View>
+      <View style={styles.buttonContainer}>
+        <ActionButton label="Next" onPress={handleNext} />
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#FFF",
-  },
-  progressText: {
-    fontSize: 16,
-    color: "#555",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  questionText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  optionsContainer: {
-    flex: 1,  // Makes options expand to fill the screen
-    justifyContent: 'flex-start', // Aligns responses from the top
-  },
-});
 
 export default SurveyScreen;

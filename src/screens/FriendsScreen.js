@@ -1,27 +1,67 @@
-import React, { useRef } from 'react';
-import { View, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import PageHeader from '../components/PageHeader';
-import PointBalance from '../components/PointBalance';
-import CustomText from '../components/CustomText';
-import { useNavigation } from '@react-navigation/native';
+import React, { useRef } from "react";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import PageHeader from "../components/PageHeader";
+import PointBalance from "../components/PointBalance";
+import CustomText from "../components/CustomText";
+import { useNavigation } from "@react-navigation/native";
 
 const friendsData = [
-  { id: '1', name: 'Alice', streak: 12, avatar: require('../../assets/dog.png') },
-  { id: '2', name: 'Bob', streak: 8, avatar: require('../../assets/dog.png') },
-  { id: '3', name: 'Charlie', streak: 15, avatar: require('../../assets/dog.png') },
+  {
+    id: "1",
+    name: "Alice",
+    streak: 12,
+    avatar: require("../../assets/pfps/pfp2.png"),
+  },
+  {
+    id: "2",
+    name: "Bob",
+    streak: 8,
+    avatar: require("../../assets/pfps/pfp5.png"),
+  },
+  {
+    id: "3",
+    name: "Charlie",
+    streak: 15,
+    avatar: require("../../assets/pfps/pfp1.png"),
+  },
 ];
 
 const otherHobbyistsData = [
-  { id: '4', name: 'David', streak: 5, avatar: require('../../assets/dog.png') },
-  { id: '5', name: 'Ella', streak: 7, avatar: require('../../assets/dog.png') },
-  { id: '6', name: 'Frank', streak: 9, avatar: require('../../assets/dog.png') },
+  {
+    id: "4",
+    name: "David",
+    streak: 5,
+    avatar: require("../../assets/pfps/pfp6.png"),
+  },
+  {
+    id: "5",
+    name: "Ella",
+    streak: 7,
+    avatar: require("../../assets/pfps/pfp3.png"),
+  },
+  {
+    id: "6",
+    name: "Frank",
+    streak: 9,
+    avatar: require("../../assets/pfp4.png"),
+  },
 ];
 
 const ProfileItem = ({ name, streak, avatar }) => (
   <View style={styles.profileItem}>
     <Image source={avatar} style={styles.avatar} />
-    <CustomText type="body" style={styles.name}>{name}</CustomText>
-    <CustomText type="body" style={styles.streak}>🔥 Streak: {streak} days</CustomText>
+    <CustomText type="body" style={styles.name}>
+      {name}
+    </CustomText>
+    <CustomText type="body" style={styles.streak}>
+      🔥 Streak: {streak} days
+    </CustomText>
   </View>
 );
 
@@ -63,15 +103,19 @@ const FriendsScreen = () => {
   return (
     <View style={styles.container}>
       <PageHeader title="Friends" onBackPress={() => navigation.goBack()} />
-      
+
       {/* Wrapping content in a scrollable container */}
       <View style={styles.content}>
         <PointBalance points={1200} />
 
-        <CustomText type="header" style={styles.sectionTitle}>Friends</CustomText>
+        <CustomText type="header" style={styles.sectionTitle}>
+          Friends
+        </CustomText>
         <Carousel data={friendsData} />
 
-        <CustomText type="header" style={styles.sectionTitle}>Other Hobbyists</CustomText>
+        <CustomText type="header" style={styles.sectionTitle}>
+          Other Hobbyists
+        </CustomText>
         <Carousel data={otherHobbyistsData} />
       </View>
     </View>
@@ -81,30 +125,30 @@ const FriendsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     paddingHorizontal: 10,
   },
   content: {
-    flex: 1,  // Ensures the content uses all vertical space
+    flex: 1, // Ensures the content uses all vertical space
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 10,
-    textAlign: 'left',
+    textAlign: "left",
   },
   carouselContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10,
   },
   carousel: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   profileItem: {
     marginHorizontal: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   avatar: {
     width: 60,
@@ -113,12 +157,12 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 5,
   },
   streak: {
     fontSize: 12,
-    color: '#FF5733',
+    color: "#FF5733",
   },
   arrowButton: {
     paddingHorizontal: 10,

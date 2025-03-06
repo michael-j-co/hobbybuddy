@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 const ProgressIndicator = ({ progress }) => {
   return (
@@ -15,23 +15,23 @@ const ProgressIndicator = ({ progress }) => {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    alignItems: 'center',
-    width: '100%',
+    alignItems: "center",
+    width: "100%",
   },
   progressBarBackground: {
-    width: '100%',
-    height: 10,
-    backgroundColor: '#EEE',
-    borderRadius: 5,
-    overflow: 'hidden',
+    width: 200,
+    height: 12,
+    backgroundColor: "#EEE",
+    borderRadius: 12,
+    overflow: "hidden",
   },
   progressBarFill: {
-    height: '100%',
-    backgroundColor: '#FFD700', // Yellow
+    height: "100%",
+    backgroundColor: "#FFC107", // Yellow
   },
   text: {
     fontSize: 14,
-    color: '#555',
+    color: "#555",
     marginTop: 5,
   },
 });

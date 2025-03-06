@@ -1,12 +1,16 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomText from './CustomText';
-const PageHeader = ({ title, onBackPress = undefined, showProfileIcon = true, useLogo = false }) => {
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CustomText from "./CustomText";
+const PageHeader = ({
+  title,
+  onBackPress = undefined,
+  showProfileIcon = true,
+  useLogo = false,
+}) => {
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}> 
+    <SafeAreaView style={styles.safeArea} edges={["top"]}>
       <View style={styles.container}>
-        
         {/* Back Button or Placeholder */}
         <View style={styles.sideContainer}>
           {onBackPress ? (
@@ -21,9 +25,12 @@ const PageHeader = ({ title, onBackPress = undefined, showProfileIcon = true, us
         {/* Centered Title or Logo */}
         <View style={styles.centerContainer}>
           {useLogo ? (
-            <Image source={require('../../assets/HBLogo.png')} style={styles.logo} />
+            <Image
+              source={require("../../assets/HBLogo.png")}
+              style={styles.logo}
+            />
           ) : (
-            <Text style={styles.title}>{title}</Text>
+            <CustomText type="header">{title}</CustomText>
           )}
         </View>
 
@@ -37,7 +44,6 @@ const PageHeader = ({ title, onBackPress = undefined, showProfileIcon = true, us
             <View style={styles.placeholder}></View>
           )}
         </View>
-
       </View>
     </SafeAreaView>
   );
@@ -45,50 +51,49 @@ const PageHeader = ({ title, onBackPress = undefined, showProfileIcon = true, us
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
   },
   container: {
     height: 110, // Reduced from 60 to minimize space
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#DDD',
+    borderBottomColor: "#DDD",
   },
   sideContainer: {
     width: 50,
-    alignItems: 'center',
+    alignItems: "center",
   },
   centerContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   backButton: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   backButtonText: {
     fontSize: 24,
   },
   title: {
     fontSize: 20, // Adjust for visibility
-    fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 0, // Ensures no extra space
   },
   logo: {
     width: 40,
     height: 40,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   profileIcon: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   profileIconText: {
     fontSize: 24,
-    color: '#007BFF',
+    color: "#007BFF",
   },
   placeholder: {
     width: 40, // Keeps spacing even if back/profile is missing

@@ -1,5 +1,5 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 const CategoryButton = ({ label, onPress, selected }) => {
   return (
@@ -7,31 +7,32 @@ const CategoryButton = ({ label, onPress, selected }) => {
       style={[styles.button, selected ? styles.selected : null]}
       onPress={onPress}
     >
-      <Text style={[styles.text, selected ? styles.selectedText : null]}>{label}</Text>
+      <Text style={[styles.text, selected ? styles.selectedText : null]}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    
-    backgroundColor: '#EAEAEA',
+    backgroundColor: "#FFF",
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 8,
-    marginVertical: 8,
-    alignItems: 'center',
+    marginVertical: 12,
+    alignItems: "center",
     borderWidth: 2,
   },
   selected: {
-    backgroundColor: '#FFD700', // Yellow for selected state
+    backgroundColor: "#FFC107", // Yellow for selected state
   },
   text: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 14,
+    color: "#2C3E50",
   },
   selectedText: {
-    color: '#333', // White text for selected state
+    color: "#333", // White text for selected state
   },
 });
 

@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import LogoHeader from '../components/LogoHeader';
-import ActionButton from '../components/ActionButton';
-import CustomText from '../components/CustomText';
-import LinkText from '../components/LinkText';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import LogoHeader from "../components/LogoHeader";
+import ActionButton from "../components/ActionButton";
+import CustomText from "../components/CustomText";
+import LinkText from "../components/LinkText";
 
 const IntroScreen = ({ navigation }) => {
   return (
@@ -32,14 +32,15 @@ const IntroScreen = ({ navigation }) => {
       {/* Buttons at the Bottom */}
       <View style={styles.actionContainer}>
         <ActionButton
-          label="Tell Us About Yourself"
-          onPress={() => navigation.navigate('CreateAccountScreen')}
+          label="Sign In"
+          style={{ width: 345 }} // Width of the button
+          onPress={() => navigation.navigate("SignInScreen")}
         />
         <LinkText
-          text="Already have an account? Sign in"
-          onPress={() => navigation.navigate('SignInScreen')}
+          text="No account? Create one now"
+          onPress={() => navigation.navigate("CreateAccountScreen")}
           align="center"
-          color="#007BFF" // Blue for link
+          color="#003F5C" // Blue for link
         />
       </View>
     </View>
@@ -50,39 +51,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 80, // Space from the top
-    justifyContent: 'space-around', // Ensures proper spacing between top, middle, and bottom
-    alignItems: 'center',
+    justifyContent: "space-around", // Ensures proper spacing between top, middle, and bottom
+    alignItems: "center",
     padding: 20,
-    backgroundColor: '#FFF', // White background
+    backgroundColor: "#FFF", // White background
     paddingBottom: 40, // Space from the bottom
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20, // Space between logo and title
   },
   appHeader: {
     fontSize: 24,
-    fontWeight: '600', // SemiBold for header
-    color: '#2C3E50', // Charcoal color
-    textAlign: 'center',
+    fontWeight: "600", // SemiBold for header
+    color: "#2C3E50", // Charcoal color
+    textAlign: "center",
     marginTop: 10, // Slight space below the logo
   },
   textContainer: {
-    alignItems: 'center',
+    alignItems: "center",
+    width: 267, // Width of the text container
     marginBottom: 20, // Space between intro text and buttons
   },
   introLine: {
     fontSize: 20,
-    
-    color: '#003f5c',
-    fontWeight: '600', // SemiBold for header
-    textAlign: 'center',
+
+    color: "#003f5c",
+    fontWeight: "600", // SemiBold for header
+    textAlign: "center",
     lineHeight: 24,
     marginBottom: 20, // Slight spacing between lines
   },
   actionContainer: {
-    width: '100%', // Take up full width for centering
-    alignItems: 'center',
+    width: "100%", // Take up full width for centering
+    alignItems: "center",
     color: "#2ECC71",
     gap: 10, // Space between button and link
   },

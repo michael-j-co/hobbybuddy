@@ -32,7 +32,7 @@ const HomePage = ({ navigation }) => {
       <View style={styles.dailyCheckInContainer}>
         <ActionButton
           label="Daily Check-in"
-          onPress={() => console.log("Daily Check-in pressed")}
+          onPress={() => navigation.navigate("DailyCheckIn")}
           style={{ height: 85 }} // Increase height
           textStyle={{ fontSize: 20 }} // Increase font size
         />
@@ -57,7 +57,7 @@ const HomePage = ({ navigation }) => {
         />
         <FeatureButton
           title="Your Badges"
-          icon={require("../../assets/badge.png")}
+          icon={require("../../assets/badge3.png")}
           onPress={() => navigation.navigate("BadgeScreen")}
         />
       </View>
